@@ -1,10 +1,4 @@
-const {
-  isGroup,
-  isSticker,
-  isStickerBanned,
-  unbanSticker,
-  banSticker
-} = require("../utils");
+const { isStickerBanned, unbanSticker, banSticker } = require("../utils");
 
 module.exports = async ctx => {
   const result = isStickerBanned(ctx)
