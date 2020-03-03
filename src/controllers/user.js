@@ -1,4 +1,4 @@
-const User = require("../database/models/users");
+const User = require("../database/models/user");
 
 const resultItemConverter = item => item.id;
 
