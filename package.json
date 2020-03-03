@@ -1,0 +1,22 @@
+{
+  "name": "telegram-admin-bot",
+  "version": "1.0.0",
+  "description": "Admin bot for Telegram chats",
+  "main": "",
+  "scripts": {
+    "test": "nodemon src/test.js",
+    "start": "nodemon src/app.js"
+  },
+  "author": "theodike",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.9.2",
+    "socks-proxy-agent": "^5.0.0",
+    "socks5-https-client": "^1.2.1",
+    "telegraf": "^3.36.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
