@@ -85,7 +85,7 @@ const isCommand = ctx =>
   ctx.message.text.startsWith("/") &&
   ctx.message.entities &&
   ctx.message.entities[0].type === "bot_command";
-const isGroup = ctx => ctx.message.chat.type !== "private";
+const isGroup = ctx => ctx.chat.type !== "private";
 const isSticker = ctx => ctx.message.sticker;
 const isStickerBanned = ctx => bannedStickers.includes(getStickerId(ctx));
 const isUserBanned = ctx => bannedUsers.includes(ctx.from.id);
