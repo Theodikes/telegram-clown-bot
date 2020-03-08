@@ -81,6 +81,7 @@ const unbanSticker = async ctx => {
 
 const isAdmin = ctx => admins.includes(ctx.from.id);
 const isCommand = ctx =>
+  ctx.message &&
   ctx.message.text &&
   ctx.message.text.startsWith("/") &&
   ctx.message.entities &&
