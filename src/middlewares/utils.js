@@ -8,6 +8,7 @@ const getUserIDByReply = ctx => ctx.message.reply_to_message.from.id;
 const getUsernameByReply = ctx => ctx.message.reply_to_message.from.username;
 const getCommand = ctx => ctx.message.text.split(" ")[0];
 const getForwardedMessage = ctx => ctx.message.reply_to_message;
+const getBannedUsers = () => bannedUsers;
 
 let admins = [];
 const loadAndSetAdmins = async () => (admins = await adminCtrl.getAll());
@@ -105,5 +106,6 @@ module.exports = {
   isAdmin,
   isCommand,
   getCommand,
-  isForwardedMessage
+  isForwardedMessage,
+  getBannedUsers
 };
