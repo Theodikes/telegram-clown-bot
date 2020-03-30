@@ -5,17 +5,29 @@ const { OWNER } = require("./config");
 
 const getStickerId = ctx => ctx.message.sticker.file_unique_id;
 const getUserIDByReply = ctx => ctx.message.reply_to_message.from.id;
+const getUserIDByForward = ctx => ctx.message.forward_from.id;
+const getMentionedUserID = ctx =>
+  parseInt(ctx.message.text.split(" ")[1] || 0, 10);
+const getUsernameByMention = ctx => {
+  const { offset, length } = ctx.message.entities.find(
+    ent => ent.type === "mention"
+  );
+
+  return ctx.message.text.slice(offset + 1, offset + length);
+};
+const getUsernameByForward = ctx => ctx.message.forward_from.username;
 const getUsernameByReply = ctx => ctx.message.reply_to_message.from.username;
 const getCommand = ctx => ctx.message.text.split(" ")[0];
-const getForwardedMessage = ctx => ctx.message.reply_to_message;
+const getReplyedMessage = ctx => ctx.message.reply_to_message;
 const getBannedUsers = () => bannedUsers;
+const getScammers = () => scammers;
 
 let admins = [];
 const loadAndSetAdmins = async () => (admins = await adminCtrl.getAll());
 loadAndSetAdmins();
 
 const addAdmin = async ctx => {
-  if (isAdmin(getForwardedMessage(ctx)))
+  if (isAdmin(getReplyedMessage(ctx)))
     return "Данный пользователь уже является администратором.";
 
   await adminCtrl.add(getUserIDByReply(ctx), getUsernameByReply(ctx));
@@ -40,9 +52,9 @@ const loadAndSetBannedUsers = async () =>
 loadAndSetBannedUsers();
 
 const banUser = async ctx => {
-  if (isAdmin(getForwardedMessage(ctx)))
-    return "Невозможно удалить сообщения администратора.";
-  if (isUserBanned(getForwardedMessage(ctx)))
+  if (isAdmin(getReplyedMessage(ctx)))
+    return "Невозможно сделать клоуном администратора.";
+  if (isUserBanned(getReplyedMessage(ctx)))
     return "Извините, но он уже выступает в цирке";
 
   await userCtrl.ban(getUserIDByReply(ctx), getUsernameByReply(ctx));
@@ -52,13 +64,60 @@ const banUser = async ctx => {
 };
 
 const unbanUser = async ctx => {
-  if (!isUserBanned(getForwardedMessage(ctx)))
+  if (!isUserBanned(getReplyedMessage(ctx)))
     return "Пока еще в цирке не выступает, сначала наденьте ему маску клоуна";
 
   await userCtrl.unban(getUserIDByReply(ctx));
   await loadAndSetBannedUsers();
 
   return "Поздравляю, маска клоуна снята!";
+};
+
+let scammers = [];
+const loadAndSetScammers = async () =>
+  (scammers = await userCtrl.getScammers());
+loadAndSetScammers();
+
+const getScammerInfo = ctx => {
+  if (isReplyedMessage(ctx))
+    return [getUserIDByReply(ctx), getUsernameByReply(ctx)];
+  if (isForwardedMessage(ctx))
+    return [getUserIDByForward(ctx), getUsernameByForward(ctx)];
+
+  return [
+    getMentionedUserID(ctx),
+    isMention(ctx) ? getUsernameByMention(ctx) : undefined
+  ];
+};
+
+const setUserAsScam = async ctx => {
+  const [id, username] = getScammerInfo(ctx);
+  if (!id) return "Укажите id скамера - это обязательный параметр.";
+  if (isUserScammer(ctx)) {
+    return "Пользователь уже в списке скамеров.";
+  }
+
+  await userCtrl.setAsScam(id, username);
+  await userCtrl.ban(id, username);
+  await loadAndSetScammers();
+  await loadAndSetBannedUsers();
+
+  return "Пользователь добавлен в список скамеров и забанен.";
+};
+
+const unsetUserAsScam = async ctx => {
+  const [id] = getScammerInfo(ctx);
+  if (!id) return "Укажите id скамера - это обязательный параметр.";
+  if (!isUserScammer(ctx)) {
+    return "Пользователь ещё не добавлен в список скамеров.";
+  }
+
+  await userCtrl.unban(id);
+  await userCtrl.unsetAsScam(id);
+  await loadAndSetScammers();
+  await loadAndSetBannedUsers();
+
+  return "Пользователь удален из списка скамеров и разбанен.";
 };
 
 let bannedStickers = [];
@@ -89,8 +148,32 @@ const isCommand = ctx =>
 const isGroup = ctx => ctx.chat.type !== "private";
 const isSticker = ctx => ctx.message.sticker;
 const isStickerBanned = ctx => bannedStickers.includes(getStickerId(ctx));
-const isUserBanned = ctx => bannedUsers.includes(ctx.from.id);
-const isForwardedMessage = ctx => ctx.message.reply_to_message;
+const isUserBanned = ctx =>
+  bannedUsers.map(user => user.id).includes(ctx.from.id);
+const isUserScammer = ctx => {
+  let id, username;
+  if (isReplyedMessage(ctx)) {
+    id = getUserIDByReply(ctx);
+    username = getUsernameByReply(ctx);
+  } else if (isForwardedMessage(ctx)) {
+    id = getUserIDByForward(ctx);
+    username = getUsernameByForward(ctx);
+  } else if (isMention(ctx)) {
+    id = getMentionedUserID(ctx);
+    username = getUsernameByMention(ctx);
+  }
+
+  return (
+    scammers.map(user => user.id).includes(id) ||
+    scammers.map(user => user.username).includes(username)
+  );
+};
+const isReplyedMessage = ctx => ctx.message.reply_to_message;
+const isForwardedMessage = ctx => ctx.message.forward_date;
+const isUserKnownByBot = ctx => ctx.message.forward_from;
+const isMention = ctx =>
+  ctx.message.entities &&
+  ctx.message.entities.some(el => el.type === "mention");
 
 module.exports = {
   isGroup,
@@ -101,11 +184,18 @@ module.exports = {
   unbanSticker,
   banUser,
   unbanUser,
+  setUserAsScam,
+  unsetUserAsScam,
   addAdmin,
   deleteAdmin,
   isAdmin,
   isCommand,
   getCommand,
+  isReplyedMessage,
+  getBannedUsers,
+  getScammers,
+  getUserIDByForward,
   isForwardedMessage,
-  getBannedUsers
+  isUserKnownByBot,
+  isUserScammer
 };

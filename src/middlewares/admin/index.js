@@ -4,37 +4,53 @@ const {
   isSticker,
   isCommand,
   isForwardedMessage,
+  isReplyedMessage,
   getCommand,
-  getBannedUsers
+  getBannedUsers,
+  getScammers
 } = require("../utils");
-const manageStickers = require("./sticker");
+const banStickers = require("./sticker");
 const manageAdministration = require("./admin");
-const manageUsers = require("./ban");
+const editBanlist = require("./ban");
+const editScamlist = require("./scam");
 
 module.exports = async (ctx, next) => {
   if (!isAdmin(ctx)) {
     await next();
     return;
   }
-  if (!isGroup(ctx) && isSticker(ctx)) await manageStickers(ctx);
+
+  if (!isGroup(ctx)) {
+    if (isSticker(ctx)) await banStickers(ctx);
+    if (isForwardedMessage(ctx)) await editScamlist(ctx);
+  }
+
   if (isCommand(ctx)) {
     const command = getCommand(ctx);
+    const getUserMention = (id, username = "") =>
+      `- [${id}](tg://user?id=${id}): @${username || "null"}`;
 
     if (/.*clowns\b/i.test(command)) {
       const banned = getBannedUsers();
 
-      const getUserMention = id => `- [${id}](tg://user?id=${id})`;
       const formattedMarkdownMessage = `*Список клоунов*: \n\n${banned
-        .map(id => getUserMention(id))
+        .map(({ id, username }) => getUserMention(id, username))
         .join("\n")}`;
 
       ctx.replyWithMarkdown(formattedMarkdownMessage);
-    }
+    } else if (/.*(scammers)|(scamlist)\b/i.test(command)) {
+      const scammers = getScammers();
 
-    if (isForwardedMessage(ctx)) {
+      const formattedMarkdownMessage = `*Скамлист*: \n\n${scammers
+        .map(({ id, username }) => getUserMention(id, username))
+        .join("\n")}`;
+
+      ctx.replyWithMarkdown(formattedMarkdownMessage);
+    } else if (/.*scam\b/.test(command)) await editScamlist(ctx);
+    else if (isReplyedMessage(ctx)) {
       if (/(set)|(delete)Admin\b/.test(command))
         await manageAdministration(ctx);
-      if (/.*clown\b/.test(command)) await manageUsers(ctx);
+      if (/.*clown\b/.test(command)) await editBanlist(ctx);
     }
   }
 };

@@ -1,6 +1,6 @@
 const User = require("../database/models/user");
 
-const resultItemConverter = item => item.id;
+const resultItemConverter = ({ id, username }) => ({ id, username });
 
 const getBanned = () =>
   new Promise(async (resolve, reject) => {
@@ -37,7 +37,7 @@ const ban = (id, username) =>
 const unban = id =>
   new Promise(async (resolve, reject) => {
     try {
-      const result = await User.updateOne(
+      const result = await User.findOneAndUpdate(
         { id },
         { banned: false },
         { upsert: true }
@@ -49,8 +49,60 @@ const unban = id =>
     }
   });
 
+const getScammers = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const result = await User.find({ isScam: true });
+      const scammers = result.map(item => resultItemConverter(item));
+
+      resolve(scammers);
+    } catch (err) {
+      console.error(
+        "Невозможно получить список скамеров. Проблемы с доступом к базе данных"
+      );
+      reject();
+    }
+  });
+
+const setAsScam = (id, username) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const result = await User.findOneAndUpdate(
+        { id },
+        { isScam: true, username },
+        { upsert: true }
+      );
+      resolve(result);
+    } catch (err) {
+      console.error(
+        `Невозможно пометить юзера ${id} как скамера. База данных недоступна.`
+      );
+      reject();
+    }
+  });
+
+const unsetAsScam = id =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const result = await User.findOneAndUpdate(
+        { id },
+        { isScam: false },
+        { upsert: true }
+      );
+      resolve(result);
+    } catch (err) {
+      console.error(
+        `Невозможно убрать юзера ${id} из скамлиста. База данных недоступна.`
+      );
+      reject();
+    }
+  });
+
 module.exports = {
   getBanned,
+  getScammers,
   ban,
-  unban
+  unban,
+  setAsScam,
+  unsetAsScam
 };

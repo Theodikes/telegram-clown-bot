@@ -15,6 +15,11 @@ const schema = new mongoose.Schema(
       required: true,
       default: false
     },
+    isScam: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
     bans: {
       type: Number,
       required: true,
