@@ -158,9 +158,9 @@ const isUserScammer = ctx => {
   } else if (isForwardedMessage(ctx)) {
     id = getUserIDByForward(ctx);
     username = getUsernameByForward(ctx);
-  } else if (isMention(ctx)) {
+  } else {
     id = getMentionedUserID(ctx);
-    username = getUsernameByMention(ctx);
+    username = isMention(ctx) ? getUsernameByMention(ctx) : "";
   }
 
   return (
