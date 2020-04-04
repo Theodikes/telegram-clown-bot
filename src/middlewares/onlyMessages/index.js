@@ -1,5 +1,5 @@
 module.exports = async (ctx, next) => {
-  if (!ctx.message || !ctx.from || !ctx.chat) return;
+  if (ctx.updateType !== "message") return;
 
   await next();
 };
