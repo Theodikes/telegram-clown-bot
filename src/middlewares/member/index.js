@@ -5,8 +5,8 @@ const {
   isForwardedMessage,
   isAdmin,
   isCommand,
-  getCommand
-} = require("../utils");
+  getCommand,
+} = require("../../utils");
 const stickerHandler = require("./sticker");
 const scamHandler = require("./scam");
 

@@ -1,6 +1,6 @@
-const { isStickerBanned, unbanSticker, banSticker } = require("../utils");
+const { isStickerBanned, unbanSticker, banSticker } = require("../../utils");
 
-module.exports = async ctx => {
+module.exports = async (ctx) => {
   const result = isStickerBanned(ctx)
     ? await unbanSticker(ctx)
     : await banSticker(ctx);

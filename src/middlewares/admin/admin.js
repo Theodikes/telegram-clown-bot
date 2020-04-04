@@ -1,6 +1,6 @@
-const { addAdmin, deleteAdmin, getCommand } = require("../utils");
+const { addAdmin, deleteAdmin, getCommand } = require("../../utils");
 
-module.exports = async ctx => {
+module.exports = async (ctx) => {
   try {
     const result =
       getCommand(ctx) === "/setAdmin"

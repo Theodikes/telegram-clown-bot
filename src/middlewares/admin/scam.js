@@ -4,10 +4,9 @@ const {
   unsetUserAsScam,
   isForwardedMessage,
   getCommand,
-  getUserIDByForward
-} = require("../utils");
+} = require("../../utils");
 
-module.exports = async ctx => {
+module.exports = async (ctx) => {
   let message = "";
   if (isForwardedMessage(ctx)) {
     message = isUserScammer(ctx)

@@ -7,8 +7,8 @@ const {
   isReplyedMessage,
   getCommand,
   getBannedUsers,
-  getScammers
-} = require("../utils");
+  getScammers,
+} = require("../../utils");
 const banStickers = require("./sticker");
 const manageAdministration = require("./admin");
 const editBanlist = require("./ban");

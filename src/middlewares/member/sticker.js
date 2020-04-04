@@ -1,5 +1,5 @@
-const { isStickerBanned } = require("../utils");
+const { isStickerBanned } = require("../../utils");
 
-module.exports = async ctx => {
+module.exports = async (ctx) => {
   if (isStickerBanned(ctx)) await ctx.deleteMessage();
 };
