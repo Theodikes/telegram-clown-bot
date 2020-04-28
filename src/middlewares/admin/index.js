@@ -53,4 +53,6 @@ module.exports = async (ctx, next) => {
       if (/.*clown\b/.test(command)) await editBanlist(ctx);
     }
   }
+
+  await next();
 };

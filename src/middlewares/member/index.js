@@ -11,12 +11,22 @@ const stickerHandler = require("./sticker");
 const scamHandler = require("./scam");
 
 module.exports = async (ctx, next) => {
-  if (isAdmin(ctx)) return;
+  if (isAdmin(ctx)) {
+    await next();
+    return;
+  }
+
+  if (isUserBanned(ctx)) {
+    await ctx.deleteMessage();
+    return;
+  }
 
   if (isCommand(ctx)) {
     const command = getCommand(ctx);
 
     if (/isscam\b/i.test(command)) return await scamHandler(ctx);
+
+    await next();
   }
 
   if (!isGroup(ctx)) {
@@ -24,11 +34,6 @@ module.exports = async (ctx, next) => {
       await scamHandler(ctx);
     }
 
-    return;
-  }
-
-  if (isUserBanned(ctx)) {
-    await ctx.deleteMessage();
     return;
   }
 
