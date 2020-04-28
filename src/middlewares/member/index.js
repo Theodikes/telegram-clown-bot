@@ -6,17 +6,18 @@ const {
   isAdmin,
   isCommand,
   getCommand,
+  getSelf,
 } = require("../../utils");
 const stickerHandler = require("./sticker");
 const scamHandler = require("./scam");
 
 module.exports = async (ctx, next) => {
-  if (isAdmin(ctx)) {
+  if (isAdmin(getSelf(ctx))) {
     await next();
     return;
   }
 
-  if (isUserBanned(ctx)) {
+  if (isUserBanned(getSelf(ctx))) {
     await ctx.deleteMessage();
     return;
   }
@@ -25,8 +26,6 @@ module.exports = async (ctx, next) => {
     const command = getCommand(ctx);
 
     if (/isscam\b/i.test(command)) return await scamHandler(ctx);
-
-    await next();
   }
 
   if (!isGroup(ctx)) {

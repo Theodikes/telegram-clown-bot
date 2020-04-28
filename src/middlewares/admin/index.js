@@ -8,6 +8,7 @@ const {
   getCommand,
   getBannedUsers,
   getScammers,
+  getSelf,
 } = require("../../utils");
 const banStickers = require("./sticker");
 const manageAdministration = require("./admin");
@@ -15,8 +16,7 @@ const editBanlist = require("./ban");
 const editScamlist = require("./scam");
 
 module.exports = async (ctx, next) => {
-  if (!isAdmin(ctx)) {
-    await next();
+  if (!isAdmin(getSelf(ctx))) {
     return;
   }
 
@@ -47,11 +47,9 @@ module.exports = async (ctx, next) => {
 
       ctx.replyWithMarkdown(formattedMarkdownMessage);
     } else if (/.*scam\b/.test(command)) await editScamlist(ctx);
-    else if (isReplyedMessage(ctx)) {
-      if (/(set)|(delete)Admin\b/.test(command))
-        await manageAdministration(ctx);
-      if (/.*clown\b/.test(command)) await editBanlist(ctx);
-    }
+    else if (/.*clown\b/.test(command)) await editBanlist(ctx);
+    else if (/(set)|(delete)Admin\b/.test(command))
+      await manageAdministration(ctx);
   }
 
   await next();

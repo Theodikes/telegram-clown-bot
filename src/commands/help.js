@@ -3,7 +3,7 @@ const { isGroup, isAdmin } = require("../utils");
 module.exports = (ctx) => {
   if (isGroup(ctx)) return;
 
-  const securityClearance = isAdmin(ctx) ? "admin" : "user";
+  const securityClearance = isAdmin(getSelf(ctx)) ? "admin" : "user";
   const availableOptions = {
     admin: [
       "Бан юзеров",
