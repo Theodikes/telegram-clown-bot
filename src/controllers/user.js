@@ -6,7 +6,7 @@ const getBanned = () =>
   new Promise(async (resolve, reject) => {
     try {
       const result = await User.find({ banned: true });
-      const bannedUsers = result.map(item => resultItemConverter(item));
+      const bannedUsers = result.map((item) => resultItemConverter(item));
 
       resolve(bannedUsers);
     } catch (err) {
@@ -34,7 +34,7 @@ const ban = (id, username) =>
     }
   });
 
-const unban = id =>
+const unban = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       const result = await User.findOneAndUpdate(
@@ -44,8 +44,8 @@ const unban = id =>
       );
       resolve(result);
     } catch (err) {
-      console.error("Невозможно разблокировать юзера. База данных недоступна.");
-      reject();
+      console.error(err);
+      reject("Невозможно разблокировать юзера. База данных недоступна.");
     }
   });
 
@@ -53,7 +53,7 @@ const getScammers = () =>
   new Promise(async (resolve, reject) => {
     try {
       const result = await User.find({ isScam: true });
-      const scammers = result.map(item => resultItemConverter(item));
+      const scammers = result.map((item) => resultItemConverter(item));
 
       resolve(scammers);
     } catch (err) {
@@ -81,7 +81,7 @@ const setAsScam = (id, username) =>
     }
   });
 
-const unsetAsScam = id =>
+const unsetAsScam = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       const result = await User.findOneAndUpdate(
@@ -104,5 +104,5 @@ module.exports = {
   ban,
   unban,
   setAsScam,
-  unsetAsScam
+  unsetAsScam,
 };
