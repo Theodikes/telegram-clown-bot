@@ -9,12 +9,11 @@ require("./database");
 
 const bot = new Telegraf(TOKEN);
 
-bot.use(onlyMessagesAllowed);
-bot.use(memberMiddleware);
-
 bot.start(provideInfo);
 bot.help(provideInfo);
 
+bot.use(onlyMessagesAllowed);
+bot.use(memberMiddleware);
 bot.use(adminMiddleware);
 
 bot.startPolling();

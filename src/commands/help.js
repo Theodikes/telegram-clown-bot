@@ -1,4 +1,4 @@
-const { isGroup, isAdmin } = require("../utils");
+const { isGroup, isAdmin, getSelf } = require("../utils");
 
 module.exports = (ctx) => {
   if (isGroup(ctx)) return;
