@@ -1,20 +1,27 @@
 const Telegraf = require("telegraf");
 const { TOKEN } = require("./config");
+const userMiddleware = require("./middlewares/user");
 const adminMiddleware = require("./middlewares/admin");
-const memberMiddleware = require("./middlewares/member");
+const privateForwardMiddleware = require("./middlewares/forward");
+const bannedMiddleware = require("./middlewares/banned");
 const developerMiddleware = require("./middlewares/developer");
 const onlyMessagesAllowed = require("./middlewares/onlyMessages");
-const provideInfo = require("./commands/help");
+const {
+  usersCommands,
+  adminsCommands,
+  developerCommands,
+} = require("./commands");
 
 require("./database");
 
 const bot = new Telegraf(TOKEN);
 
-bot.command(["start", "help"], provideInfo);
-bot.command(["unbanAll", "id"], developerMiddleware);
-
 bot.use(onlyMessagesAllowed);
-bot.use(memberMiddleware);
-bot.use(adminMiddleware);
+bot.use(bannedMiddleware);
+bot.use(privateForwardMiddleware);
+
+bot.command(usersCommands, userMiddleware);
+bot.command(developerCommands, developerMiddleware);
+bot.command(adminsCommands, adminMiddleware);
 
 bot.startPolling();

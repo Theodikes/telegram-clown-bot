@@ -3,7 +3,7 @@ const {
   getUser,
   isAdmin,
   loadAndSetAdmins,
-  getCommand,
+  getLowerCaseCommand,
 } = require("../../utils");
 const adminCtrl = require("../../controllers/admin");
 const { OWNER } = require("../../config");
@@ -34,7 +34,7 @@ module.exports = async (ctx) => {
 
   try {
     const result =
-      getCommand(ctx) === "/setAdmin"
+      getLowerCaseCommand(ctx) === "setadmin"
         ? await addAdmin(ctx)
         : await deleteAdmin(ctx);
 

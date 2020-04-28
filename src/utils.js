@@ -8,9 +8,8 @@ const getUserID = (ctx) => {
   if (isReplyedMessage(ctx)) return ctx.message.reply_to_message.from.id;
   if (isForwardedMessage(ctx))
     return isUserKnownByBot(ctx) ? ctx.message.forward_from.id : undefined;
-  if (isMention(ctx)) return parseInt(ctx.message.text.split(" ")[1] || 0, 10);
 
-  return ctx.from.id;
+  return parseInt(ctx.message.text.split(" ")[1] || 0, 10);
 };
 const getUsername = (ctx) => {
   if (isReplyedMessage(ctx)) return ctx.message.reply_to_message.from.username;
@@ -26,15 +25,17 @@ const getUsername = (ctx) => {
     return ctx.message.text.slice(offset + 1, offset + length);
   }
 
-  return ctx.from.username;
+  return null;
 };
 const getUser = (ctx) => [getUserID(ctx), getUsername(ctx)];
-const getCommand = (ctx) => {
+const getUserMentionInMarkdownFormat = (id, username = "") =>
+  `- [${id}](tg://user?id=${id}): @${username || "null"}`;
+const getLowerCaseCommand = (ctx) => {
   const { offset, length } = ctx.message.entities.find(
     (ent) => ent.type === "bot_command"
   );
 
-  return ctx.message.text.slice(offset, offset + length);
+  return ctx.message.text.slice(offset + 1, offset + length).toLowerCase();
 };
 const getBannedUsers = () => bannedUsers;
 const getScammers = () => scammers;
@@ -70,6 +71,7 @@ const isStickerBanned = (ctx) => bannedStickers.includes(getStickerId(ctx));
 const isUserBanned = (id) => bannedUsers.map((user) => user.id).includes(id);
 const isUserScammer = (ctx) => {
   const [id, username] = getUser(ctx);
+  console.log(id, username);
 
   return (
     scammers.map((user) => user.id).includes(id) ||
@@ -91,7 +93,8 @@ module.exports = {
   isAdmin,
   isCommand,
   getSelf,
-  getCommand,
+  getLowerCaseCommand,
+  getUserMentionInMarkdownFormat,
   isReplyedMessage,
   getBannedUsers,
   getScammers,

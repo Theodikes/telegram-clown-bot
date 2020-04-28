@@ -1,6 +1,6 @@
-const { isGroup, isAdmin, getSelf } = require("../utils");
+const { isGroup, isAdmin, getSelf } = require("../../utils");
 
-module.exports = (ctx) => {
+module.exports = async (ctx) => {
   if (isGroup(ctx)) return;
 
   const securityClearance = isAdmin(getSelf(ctx)) ? "admin" : "user";
@@ -35,5 +35,5 @@ module.exports = (ctx) => {
 *WARNING*: отсутствие человека в скам-листе не означает, что он не является скамером. Он может быть еще не занесен, либо мог просто изменить юзернейм (если вы делали запрос только по юзернейму)
 `;
 
-  ctx.replyWithMarkdown(markdownMessage);
+  await ctx.replyWithMarkdown(markdownMessage);
 };

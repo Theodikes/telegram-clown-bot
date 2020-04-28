@@ -3,8 +3,9 @@ const {
   getUser,
   getUserID,
   isForwardedMessage,
-  getCommand,
+  getLowerCaseCommand,
   loadAndSetScammers,
+  loadAndSetBannedUsers,
 } = require("../../utils");
 const userCtrl = require("../../controllers/user");
 
@@ -51,7 +52,7 @@ module.exports = async (ctx) => {
   }
 
   message =
-    getCommand(ctx) === "/scam"
+    getLowerCaseCommand(ctx) === "scam"
       ? await setUserAsScam(ctx)
       : await unsetUserAsScam(ctx);
   await ctx.reply(message);
