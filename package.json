@@ -4,9 +4,10 @@
   "description": "Admin bot for Telegram chats",
   "main": "",
   "scripts": {
-    "test": "nodemon src/test.js",
+    "test": "nodemon src/test/index.js",
     "start": "nodemon src/app.js"
   },
+  "type": "module",
   "author": "theodike",
   "license": "ISC",
   "dependencies": {
