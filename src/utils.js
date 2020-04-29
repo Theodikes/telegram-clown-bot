@@ -71,7 +71,6 @@ const isStickerBanned = (ctx) => bannedStickers.includes(getStickerId(ctx));
 const isUserBanned = (id) => bannedUsers.map((user) => user.id).includes(id);
 const isUserScammer = (ctx) => {
   const [id, username] = getUser(ctx);
-  console.log(id, username);
 
   return (
     scammers.map((user) => user.id).includes(id) ||
