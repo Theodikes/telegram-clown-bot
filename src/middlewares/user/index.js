@@ -1,9 +1,9 @@
-const { getLowerCaseCommand } = require("../../utils");
-const { helpCommands } = require("../../commands");
-const helpHandler = require("./help");
-const scamHandler = require("./scam");
+import { getLowerCaseCommand } from "../utils.js";
+import { helpCommands } from "../../commands/index.js";
+import helpHandler from "./help.js";
+import scamHandler from "./scam.js";
 
-module.exports = async (ctx, next) => {
+export default async (ctx, next) => {
   const command = getLowerCaseCommand(ctx);
 
   if (helpCommands.includes(command)) await helpHandler(ctx);

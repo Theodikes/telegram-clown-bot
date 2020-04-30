@@ -1,7 +1,7 @@
-const userCtrl = require("../../controllers/user");
-const { getBannedUsers, loadAndSetBannedUsers } = require("../../utils");
+import userCtrl from "../../controllers/user.js";
+import { getBannedUsers, loadAndSetBannedUsers } from "../utils.js";
 
-module.exports = async () => {
+export default async () => {
   const banned = getBannedUsers();
 
   try {

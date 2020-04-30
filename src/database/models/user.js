@@ -1,32 +1,32 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const schema = new mongoose.Schema(
   {
     id: {
       type: Number,
       required: true,
-      unique: true
+      unique: true,
     },
     username: {
-      type: String
+      type: String,
     },
     banned: {
       type: Boolean,
       required: true,
-      default: false
+      default: false,
     },
     isScam: {
       type: Boolean,
       required: true,
-      default: false
+      default: false,
     },
     bans: {
       type: Number,
       required: true,
-      default: 0
-    }
+      default: 0,
+    },
   },
   { id: false }
 );
 
-module.exports = mongoose.model("User", schema);
+export default mongoose.model("User", schema);

@@ -1,12 +1,12 @@
-const Admin = require("../database/models/admin");
+import Admin from "../database/models/admin.js";
 
-const resultItemConverter = item => item.id;
+const resultItemConverter = (item) => item.id;
 
 const getAll = () =>
   new Promise(async (resolve, reject) => {
     try {
       const result = await Admin.find();
-      const admins = result.map(item => resultItemConverter(item));
+      const admins = result.map((item) => resultItemConverter(item));
 
       resolve(admins);
     } catch (err) {
@@ -34,7 +34,7 @@ const add = (id, username = "") =>
     }
   });
 
-const remove = id =>
+const remove = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       const result = await Admin.findOneAndRemove({ id });
@@ -49,8 +49,8 @@ const remove = id =>
     }
   });
 
-module.exports = {
+export default {
   getAll,
   add,
-  remove
+  remove,
 };

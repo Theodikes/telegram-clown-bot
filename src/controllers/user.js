@@ -1,4 +1,4 @@
-const User = require("../database/models/user");
+import User from "../database/models/user.js";
 
 const resultItemConverter = ({ id, username }) => ({ id, username });
 
@@ -98,7 +98,7 @@ const unsetAsScam = (id) =>
     }
   });
 
-module.exports = {
+export default {
   getBanned,
   getScammers,
   ban,

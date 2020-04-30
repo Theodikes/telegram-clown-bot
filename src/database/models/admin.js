@@ -1,17 +1,17 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const schema = new mongoose.Schema(
   {
     id: {
       type: Number,
       required: true,
-      unique: true
+      unique: true,
     },
     username: {
-      type: String
-    }
+      type: String,
+    },
   },
   { id: false }
 );
 
-module.exports = mongoose.model("Admin", schema);
+export default mongoose.model("Admin", schema);

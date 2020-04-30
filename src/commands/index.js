@@ -30,7 +30,7 @@ const adminsCommands = [
 ];
 const developerCommands = ["unbanAll", "info"];
 
-module.exports = {
+export {
   usersCommands,
   adminsCommands,
   developerCommands,

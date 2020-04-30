@@ -1,24 +1,26 @@
-const Telegraf = require("telegraf");
-const { TOKEN } = require("./config");
-const userMiddleware = require("./middlewares/user");
-const adminMiddleware = require("./middlewares/admin");
-const privateForwardMiddleware = require("./middlewares/forward");
-const bannedMiddleware = require("./middlewares/banned");
-const developerMiddleware = require("./middlewares/developer");
-const onlyMessagesAllowed = require("./middlewares/onlyMessages");
-const {
+import Telegraf from "telegraf";
+import { TOKEN } from "./config.js";
+import {
   usersCommands,
   adminsCommands,
   developerCommands,
-} = require("./commands");
+} from "./commands/index.js";
+import {
+  userMiddleware,
+  adminMiddleware,
+  developerMiddleware,
+  bannedMiddleware,
+  privateMiddleware,
+  onlyMessagesAllowed,
+} from "./middlewares/index.js";
 
-require("./database");
+import _ from "./database/index.js";
 
 const bot = new Telegraf(TOKEN);
 
 bot.use(onlyMessagesAllowed);
 bot.use(bannedMiddleware);
-bot.use(privateForwardMiddleware);
+bot.use(privateMiddleware);
 
 bot.command(usersCommands, userMiddleware);
 bot.command(developerCommands, developerMiddleware);

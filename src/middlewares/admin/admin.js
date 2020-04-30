@@ -1,14 +1,14 @@
-const {
+import {
   getUserID,
   getUser,
   isAdmin,
   loadAndSetAdmins,
   getLowerCaseCommand,
-} = require("../../utils");
-const adminCtrl = require("../../controllers/admin");
-const { OWNER } = require("../../config");
+} from "../utils.js";
+import adminCtrl from "../../controllers/admin.js";
+import { OWNER } from "../../config.js";
 
-module.exports = async (ctx) => {
+export default async (ctx) => {
   const addAdmin = async (ctx) => {
     const [id, username] = getUser(ctx);
     if (!id) "Не указан id администратора";

@@ -1,6 +1,6 @@
-const { isGroup, isAdmin, getSelf } = require("../../utils");
+import { isGroup, isAdmin, getSelf } from "../utils.js";
 
-module.exports = async (ctx) => {
+export default async (ctx) => {
   if (isGroup(ctx)) return;
 
   const securityClearance = isAdmin(getSelf(ctx)) ? "admin" : "user";

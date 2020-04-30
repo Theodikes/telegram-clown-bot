@@ -4,7 +4,7 @@
   "description": "Admin bot for Telegram chats",
   "main": "",
   "scripts": {
-    "test": "nodemon src/test/index.js",
+    "test": "nodemon src/test/index.js --experimental-modules",
     "start": "nodemon src/app.js"
   },
   "type": "module",

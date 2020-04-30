@@ -1,13 +1,13 @@
-const Sticker = require("../database/models/sticker");
+import Sticker from "../database/models/sticker.js";
 
-const resultItemConverter = item => item.file_id;
+const resultItemConverter = (item) => item.file_id;
 
 const getAll = () =>
   new Promise(async (resolve, reject) => {
     try {
       const result = await Sticker.find();
 
-      resolve(result.map(item => resultItemConverter(item)));
+      resolve(result.map((item) => resultItemConverter(item)));
     } catch (err) {
       console.error(
         "Невозможно получить список заблокированных стикеров. Проблемы с доступом к базе данных."
@@ -17,7 +17,7 @@ const getAll = () =>
     }
   });
 
-const add = id =>
+const add = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       const sticker = new Sticker({ file_id: id });
@@ -28,7 +28,7 @@ const add = id =>
       reject(new Error("Ошибка сохранения стикера в базу данных"));
     }
   });
-const remove = id =>
+const remove = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       const result = await Sticker.findOneAndRemove({ file_id: id });
@@ -39,8 +39,8 @@ const remove = id =>
     }
   });
 
-module.exports = {
+export default {
   getAll,
   add,
-  remove
+  remove,
 };

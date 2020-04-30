@@ -1,8 +1,8 @@
-const { OWNER } = require("../../config");
-const { getSelf, getLowerCaseCommand, getUser } = require("../../utils");
-const unbanAll = require("./unbanAll");
+import { OWNER } from "../../config.js";
+import { getSelf, getLowerCaseCommand, getUser } from "../utils.js";
+import unbanAll from "./unbanAll.js";
 
-module.exports = async (ctx, next) => {
+export default async (ctx, next) => {
   if (getSelf(ctx) != OWNER) {
     return;
   }

@@ -1,11 +1,11 @@
-const {
+import {
   isStickerBanned,
   getStickerId,
   loadAndSetBannedStickers,
-} = require("../../utils");
-const stickersCtrl = require("../../controllers/sticker");
+} from "../utils.js";
+import stickersCtrl from "../../controllers/sticker.js";
 
-module.exports = async (ctx) => {
+export default async (ctx) => {
   const banSticker = async (ctx) => {
     await stickersCtrl.add(getStickerId(ctx));
     await loadAndSetBannedStickers();

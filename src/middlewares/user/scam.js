@@ -1,10 +1,10 @@
-const {
+import {
   isUserKnownByBot,
   isUserScammer,
   isForwardedMessage,
-} = require("../../utils");
+} from "../utils.js";
 
-module.exports = async (ctx) => {
+export default async (ctx) => {
   const unknown =
     "Этого юзера нет в списке известных боту (технические причины). Работайте с ним на свой страх и риск.";
   const scam = "Этот пользователь - скамер. Не ведите с ним дел!";

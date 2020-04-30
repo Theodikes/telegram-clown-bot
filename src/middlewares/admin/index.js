@@ -1,25 +1,18 @@
-const {
-  isAdmin,
-  isGroup,
-  isSticker,
-  isForwardedMessage,
-  getLowerCaseCommand,
-  getSelf,
-} = require("../../utils");
-const manageAdministration = require("./admin");
-const editBanlist = require("./ban");
-const editScamlist = require("./scam");
-const sendScamlist = require("./scamlist");
-const sendBanlist = require("./banlist");
-const {
+import { isAdmin, getLowerCaseCommand, getSelf } from "../utils.js";
+import manageAdministration from "./admin.js";
+import editBanlist from "./ban.js";
+import editScamlist from "./scam.js";
+import sendScamlist from "./scamlist.js";
+import sendBanlist from "./banlist.js";
+import {
   scamlistCommands,
   banlistCommands,
   banManagementCommands,
   scamManagementCommands,
   adminManagementCommands,
-} = require("../../commands");
+} from "../../commands/index.js";
 
-module.exports = async (ctx, next) => {
+export default async (ctx, next) => {
   if (!isAdmin(getSelf(ctx))) {
     await next();
     return;

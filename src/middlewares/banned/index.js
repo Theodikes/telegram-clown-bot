@@ -1,14 +1,12 @@
-const {
-  isGroup,
+import {
   isSticker,
   isUserBanned,
-  isForwardedMessage,
+  isStickerBanned,
   isAdmin,
   getSelf,
-} = require("../../utils");
-const stickerHandler = require("./sticker");
+} from "../utils.js";
 
-module.exports = async (ctx, next) => {
+export default async (ctx, next) => {
   if (isAdmin(getSelf(ctx))) {
     await next();
     return;
@@ -19,7 +17,10 @@ module.exports = async (ctx, next) => {
     return;
   }
 
-  if (isSticker(ctx)) await stickerHandler(ctx);
+  if (isSticker(ctx) && isStickerBanned(ctx)) {
+    await ctx.deleteMessage();
+    return;
+  }
 
   await next();
 };

@@ -1,6 +1,6 @@
-const stickersCtrl = require("./controllers/sticker");
-const adminCtrl = require("./controllers/admin");
-const userCtrl = require("./controllers/user");
+import stickersCtrl from "../controllers/sticker.js";
+import adminCtrl from "../controllers/admin.js";
+import userCtrl from "../controllers/user.js";
 
 const getSelf = (ctx) => ctx.from.id;
 const getStickerId = (ctx) => ctx.message.sticker.file_unique_id;
@@ -84,7 +84,7 @@ const isMention = (ctx) =>
   ctx.message.entities &&
   ctx.message.entities.some((el) => el.type === "mention");
 
-module.exports = {
+export {
   isGroup,
   isSticker,
   isStickerBanned,

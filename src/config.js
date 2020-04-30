@@ -1,6 +1,5 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
-module.exports = {
-  TOKEN: process.env.BOT_TOKEN,
-  OWNER: process.env.BOT_OWNER,
-};
+export const TOKEN = process.env.BOT_TOKEN;
+export const OWNER = process.env.BOT_OWNER;

@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
   file_id: {
     type: String,
     required: true,
-    unique: true
-  }
+    unique: true,
+  },
 });
 
-module.exports = mongoose.model("Sticker", schema);
+export default mongoose.model("Sticker", schema);

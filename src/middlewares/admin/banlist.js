@@ -1,9 +1,6 @@
-const {
-  getBannedUsers,
-  getUserMentionInMarkdownFormat,
-} = require("../../utils");
+import { getBannedUsers, getUserMentionInMarkdownFormat } from "../utils.js";
 
-module.exports = async (ctx) => {
+export default async (ctx) => {
   const banned = getBannedUsers();
 
   const formattedMarkdownMessage = `*Список клоунов*: \n\n${banned

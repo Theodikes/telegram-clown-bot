@@ -1,6 +1,6 @@
-const { getScammers, getUserMentionInMarkdownFormat } = require("../../utils");
+import { getScammers, getUserMentionInMarkdownFormat } from "../utils.js";
 
-module.exports = async (ctx) => {
+export default async (ctx) => {
   const scammers = getScammers();
 
   const formattedMarkdownMessage = `*Скамлист*: \n\n${scammers

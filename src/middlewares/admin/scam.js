@@ -1,4 +1,4 @@
-const {
+import {
   isUserScammer,
   getUser,
   getUserID,
@@ -6,10 +6,10 @@ const {
   getLowerCaseCommand,
   loadAndSetScammers,
   loadAndSetBannedUsers,
-} = require("../../utils");
-const userCtrl = require("../../controllers/user");
+} from "../utils.js";
+import userCtrl from "../../controllers/user.js";
 
-module.exports = async (ctx) => {
+export default async (ctx) => {
   const setUserAsScam = async (ctx) => {
     const [id, username] = getUser(ctx);
 

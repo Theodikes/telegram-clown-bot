@@ -1,14 +1,14 @@
-const {
+import {
   isAdmin,
   loadAndSetBannedUsers,
   isUserBanned,
   getLowerCaseCommand,
   getUser,
   getUserID,
-} = require("../../utils");
-const userCtrl = require("../../controllers/user");
+} from "../utils.js";
+import userCtrl from "../../controllers/user.js";
 
-module.exports = async (ctx) => {
+export default async (ctx) => {
   const banUser = async (ctx) => {
     const [id, username] = getUser(ctx);
 

@@ -1,15 +1,15 @@
-const {
+import {
   isAdmin,
   getSelf,
   isForwardedMessage,
   isGroup,
   isSticker,
-} = require("../../utils");
-const banStickers = require("./sticker");
-const editScamlist = require("../admin/scam");
-const scamHandler = require("../user/scam");
+} from "../utils.js";
+import banStickers from "./sticker.js";
+import editScamlist from "../admin/scam.js";
+import scamHandler from "../user/scam.js";
 
-module.exports = async (ctx, next) => {
+export default async (ctx, next) => {
   if (isGroup(ctx)) {
     await next();
     return;
@@ -19,4 +19,6 @@ module.exports = async (ctx, next) => {
     if (isSticker(ctx)) await banStickers(ctx);
     if (isForwardedMessage(ctx)) await editScamlist(ctx);
   } else if (isForwardedMessage(ctx)) await scamHandler(ctx);
+
+  await next();
 };
