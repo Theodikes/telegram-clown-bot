@@ -28,8 +28,8 @@ const getUsername = (ctx) => {
   return null;
 };
 const getUser = (ctx) => [getUserID(ctx), getUsername(ctx)];
-const getUserMentionInMarkdownFormat = (id, username = "") =>
-  `- [${id}](tg://user?id=${id}): @${username || "null"}`;
+const getUserMentionInMarkdownFormat = (id, username = "null") =>
+  `- [${id}](tg://user?id=${id}): @${username}`.replace(/_/g, "\\_");
 const getLowerCaseCommand = (ctx) => {
   const { offset, length } = ctx.message.entities.find(
     (ent) => ent.type === "bot_command"
