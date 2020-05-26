@@ -3,7 +3,7 @@ import { helpCommands } from "../../commands/index.js";
 import helpHandler from "./help.js";
 import scamHandler from "./scam.js";
 
-export default async (ctx, next) => {
+export const userMiddleware = async (ctx, next) => {
   const command = getLowerCaseCommand(ctx);
 
   if (helpCommands.includes(command)) await helpHandler(ctx);

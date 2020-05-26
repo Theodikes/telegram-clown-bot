@@ -1,5 +1,9 @@
-export default async (ctx, next) => {
-  if (ctx.updateType !== "message") return;
+export const onlyMessagesAllowed = async (ctx, next) => {
+  try {
+    if (ctx.updateType !== "message") return;
 
-  await next();
+    await next();
+  } catch (e) {}
+
+  return;
 };

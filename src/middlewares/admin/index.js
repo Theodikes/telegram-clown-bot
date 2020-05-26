@@ -12,7 +12,7 @@ import {
   adminManagementCommands,
 } from "../../commands/index.js";
 
-export default async (ctx, next) => {
+export const adminMiddleware = async (ctx, next) => {
   if (!isAdmin(getSelf(ctx))) {
     await next();
     return;

@@ -6,7 +6,7 @@ import {
   getSelf,
 } from "../utils.js";
 
-export default async (ctx, next) => {
+export const bannedMiddleware = async (ctx, next) => {
   if (isAdmin(getSelf(ctx))) {
     await next();
     return;

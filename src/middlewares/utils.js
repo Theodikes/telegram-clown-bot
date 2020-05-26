@@ -1,6 +1,7 @@
 import stickersCtrl from "../controllers/sticker.js";
 import adminCtrl from "../controllers/admin.js";
 import userCtrl from "../controllers/user.js";
+import chatCtrl from "../controllers/chat.js";
 
 const getSelf = (ctx) => ctx.from.id;
 const getStickerId = (ctx) => ctx.message.sticker.file_unique_id;
@@ -37,8 +38,49 @@ const getLowerCaseCommand = (ctx) => {
 
   return ctx.message.text.slice(offset + 1, offset + length).toLowerCase();
 };
+
+const getLastDayJoined = (ctx) => chats[ctx.chat.id]?.lastDayJoined;
+const getJoinedInPeriod = (chatID, periodInMilliseconds) => {
+  const currentDate = Date.now();
+  return chats[chatID]?.lastDayJoined.filter(
+    ({ joinDate }) => joinDate > currentDate - periodInMilliseconds
+  );
+};
 const getBannedUsers = () => bannedUsers;
 const getScammers = () => scammers;
+
+const updateLastDayJoined = (ctx) => {
+  const chatID = ctx.chat.id;
+  const currentDate = Date.now();
+  const day = 24 * 60 * 60 * 1000;
+  const [new_chat_member, left_chat_member] = [
+    "new_chat_members",
+    "left_chat_member",
+  ];
+  const action = ctx.updateSubTypes.includes(new_chat_member)
+    ? new_chat_member
+    : left_chat_member;
+
+  if (action === left_chat_member) {
+    const leftUserID = ctx.message.left_chat_member.id;
+
+    chats[chatID].lastDayJoined = getJoinedInPeriod(chatID, day).filter(
+      ({ id }) => id !== leftUserID
+    );
+  } else {
+    const newUser = {
+      joinDate: currentDate,
+      id: ctx.message.new_chat_member.id,
+      joinMessageId: ctx.message.message_id,
+    };
+
+    chats[chatID].lastDayJoined = [...getJoinedInPeriod(chatID, day), newUser];
+  }
+};
+
+let chats = [];
+const loadAndSetChats = async () => (chats = await chatCtrl.getAll());
+loadAndSetChats();
 
 let admins = [];
 const loadAndSetAdmins = async () => (admins = await adminCtrl.getAll());
@@ -61,8 +103,7 @@ loadAndSetBannedStickers();
 
 const isAdmin = (id) => admins.includes(id);
 const isCommand = (ctx) =>
-  ctx.message.text &&
-  ctx.message.text.startsWith("/") &&
+  ctx.message.text?.startsWith("/") &&
   ctx.message.entities &&
   ctx.message.entities[0].type === "bot_command";
 const isGroup = (ctx) => ctx.chat.type !== "private";
@@ -81,8 +122,8 @@ const isReplyedMessage = (ctx) => ctx.message.reply_to_message;
 const isForwardedMessage = (ctx) => ctx.updateSubTypes.includes("forward");
 const isUserKnownByBot = (ctx) => ctx.message.forward_from;
 const isMention = (ctx) =>
-  ctx.message.entities &&
-  ctx.message.entities.some((el) => el.type === "mention");
+  ctx.message.entities?.some((el) => el.type === "mention");
+const isChatAttacked = (ctx) => chats[ctx.message.chat.id]?.attacked;
 
 export {
   isGroup,
@@ -97,6 +138,7 @@ export {
   isReplyedMessage,
   getBannedUsers,
   getScammers,
+  getLastDayJoined,
   getUser,
   getUserID,
   getUsername,
@@ -108,4 +150,8 @@ export {
   loadAndSetBannedStickers,
   loadAndSetBannedUsers,
   loadAndSetScammers,
+  loadAndSetChats,
+  isChatAttacked,
+  updateLastDayJoined,
+  getJoinedInPeriod,
 };

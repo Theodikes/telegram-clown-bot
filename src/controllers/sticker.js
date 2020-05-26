@@ -28,6 +28,7 @@ const add = (id) =>
       reject(new Error("Ошибка сохранения стикера в базу данных"));
     }
   });
+
 const remove = (id) =>
   new Promise(async (resolve, reject) => {
     try {

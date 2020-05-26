@@ -28,7 +28,13 @@ const adminsCommands = [
   ...scamlistCommands,
   ...banlistCommands,
 ];
-const developerCommands = ["unbanAll", "info"];
+const developerCommands = [
+  "unbanAll",
+  "info",
+  "underAttack",
+  "kickAll",
+  "addChat",
+];
 
 export {
   usersCommands,

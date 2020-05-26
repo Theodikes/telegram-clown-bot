@@ -9,7 +9,7 @@ import banStickers from "./sticker.js";
 import editScamlist from "../admin/scam.js";
 import scamHandler from "../user/scam.js";
 
-export default async (ctx, next) => {
+export const privateMiddleware = async (ctx, next) => {
   if (isGroup(ctx)) {
     await next();
     return;

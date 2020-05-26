@@ -12,11 +12,14 @@ import {
   bannedMiddleware,
   privateMiddleware,
   onlyMessagesAllowed,
+  noSpam,
 } from "./middlewares/index.js";
 
 import _ from "./database/index.js";
 
 const bot = new Telegraf(TOKEN);
+
+bot.on(["new_chat_members", "left_chat_member"], noSpam);
 
 bot.use(onlyMessagesAllowed);
 bot.use(bannedMiddleware);
