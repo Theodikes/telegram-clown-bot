@@ -4,6 +4,8 @@ import unbanAll from "./unbanAll.js";
 import addChat from "./addChat.js";
 import setAttackState from "./underAttack.js";
 import kickAllByTime from "./kickAllByTime.js";
+import banUser from "./banUser.js";
+import unbanUser from "./unbanUser.js";
 
 export const developerMiddleware = async (ctx, next) => {
   if (getSelf(ctx) != OWNER) {
@@ -11,12 +13,6 @@ export const developerMiddleware = async (ctx, next) => {
   }
 
   const command = getLowerCaseCommand(ctx);
-  const getUserMention = (id, username) =>
-    (username ? `@${username}` : `[${id}](tg://user?id=${id})`).replace(
-      /_/g,
-      "\\_"
-    );
-  const [id, username] = getUser(ctx);
   let message;
 
   switch (command) {
@@ -25,6 +21,7 @@ export const developerMiddleware = async (ctx, next) => {
       break;
 
     case "info":
+      const [id, username] = getUser(ctx);
       message = `ID: ${
         id || "неизвестно. Вы не переслали сообщение."
       }\nUsername: @${username}`;
@@ -43,28 +40,11 @@ export const developerMiddleware = async (ctx, next) => {
       break;
 
     case "ban":
-      try {
-        await ctx.kickChatMember(id);
-        message = `${getUserMention(id, username)} удален из чата`;
-      } catch (err) {
-        message =
-          err.code === 400
-            ? "Невозможно заблокировать администратора чата"
-            : "Неизвестная ошибка";
-      }
-
+      message = await banUser(ctx);
       break;
 
     case "unban":
-      const user = await ctx.getChatMember(id);
-      const isUserBanned = user.status === "left" || user.status === "kicked";
-      if (isUserBanned) {
-        await ctx.unbanChatMember(id);
-        message = `${getUserMention(id, username)} разблокирован в чате`;
-      } else {
-        message = "Пользователь и так находится в чате";
-      }
-
+      message = await unbanUser(ctx);
       break;
   }
 
