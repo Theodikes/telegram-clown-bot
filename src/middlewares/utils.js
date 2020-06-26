@@ -73,7 +73,7 @@ const getJoinedInPeriod = (chatID, periodInMilliseconds) => {
 const getBannedUsers = () => bannedUsers;
 const getScammers = () => scammers;
 
-const updateLastDayJoined = (ctx) => {
+const updateLastDayJoined = async (ctx) => {
   const chatID = ctx.chat.id;
   const currentDate = Date.now();
   const day = 24 * 60 * 60 * 1000;
@@ -84,6 +84,7 @@ const updateLastDayJoined = (ctx) => {
   const action = ctx.updateSubTypes.includes(new_chat_member)
     ? new_chat_member
     : left_chat_member;
+  if (!chats[chatID]) await loadAndSetChats();
 
   if (action === left_chat_member) {
     const leftUserID = ctx.message.left_chat_member.id;
