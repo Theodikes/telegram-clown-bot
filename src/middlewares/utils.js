@@ -29,8 +29,15 @@ const getUsername = (ctx) => {
   return null;
 };
 const getUser = (ctx) => [getUserID(ctx), getUsername(ctx)];
-const getUserMentionInMarkdownFormat = (id, username = "null") =>
+
+const getUserMarkdownMention = (id, username) =>
+  (username ? `@${username}` : `[${id}](tg://user?id=${id})`).replace(
+    /_/g,
+    "\\_"
+  );
+const getFullUserMarkdownMention = (id, username = "null") =>
   `- [${id}](tg://user?id=${id}): @${username}`.replace(/_/g, "\\_");
+
 const getLowerCaseCommand = (ctx) => {
   const { offset, length } = ctx.message.entities.find(
     (ent) => ent.type === "bot_command"
@@ -39,6 +46,21 @@ const getLowerCaseCommand = (ctx) => {
   return ctx.message.text.slice(offset + 1, offset + length).toLowerCase();
 };
 
+const getUnixtimePeriodByParameter = (ctx) => {
+  const parameter = ctx.message.text.split(" ")[1];
+  if (!parameter) return 0;
+
+  let timeUnit;
+  if (parameter.endsWith("m")) timeUnit = 60;
+  else if (parameter.endsWith("h")) timeUnit = 60 * 60;
+  else if (parameter.endsWith("d")) timeUnit = 60 * 60 * 24;
+  else {
+    return "Неправильно указана единица времени, доступные значения: *m*, *h* и *d*.";
+  }
+
+  const period = parseInt(parameter) * 1000 * timeUnit;
+  return period;
+};
 const getLastDayJoined = (ctx) => chats[ctx.chat.id]?.lastDayJoined;
 const getJoinedInPeriod = (chatID, periodInMilliseconds) => {
   const currentDate = Date.now();
@@ -136,10 +158,12 @@ export {
   isCommand,
   getSelf,
   getLowerCaseCommand,
-  getUserMentionInMarkdownFormat,
+  getUserMarkdownMention,
+  getFullUserMarkdownMention,
   isReplyedMessage,
   getBannedUsers,
   getScammers,
+  getUnixtimePeriodByParameter,
   getLastDayJoined,
   getUser,
   getUserID,
