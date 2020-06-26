@@ -8,7 +8,7 @@ export default async (ctx) => {
   const banUser = "Бан пользователей";
   const setUserAsScam = "Внесение юзеров в скамлист";
   const banSticker = "Бан стикеров в беседе";
-  const getBanlist = "Получение списка заблокированных";
+  const getClownlist = "Получение списка заблокированных";
   const getScamlist = "Получение скамлиста";
   const checkScam = "Проверка пользователей на скам";
 
@@ -16,7 +16,7 @@ export default async (ctx) => {
     banUser,
     setUserAsScam,
     banSticker,
-    getBanlist,
+    getClownlist,
     getScamlist,
   ];
 
@@ -49,7 +49,7 @@ export default async (ctx) => {
     
 Примечание: админы бота могут использовать заблокированные стикеры в беседе`,
 
-    [getBanlist]: `Отправляет полный банлист в формате id:username одним сообщением по команде */clowns* или */banned*. Команды работают только у администраторов, чтобы этим не заспамили чат.`,
+    [getClownlist]: `Отправляет полный банлист в формате id:username одним сообщением по команде */clowns* или */banned*. Команды работают только у администраторов, чтобы этим не заспамили чат.`,
 
     [getScamlist]: `Отправляет полный список скамеров в формате id:username одним сообщением по команде */scamlist* или */scammers*. Команды работают только у администраторов, чтобы этим не заспамили чат.`,
   };

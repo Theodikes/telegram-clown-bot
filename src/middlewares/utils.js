@@ -42,8 +42,10 @@ const getLowerCaseCommand = (ctx) => {
 const getLastDayJoined = (ctx) => chats[ctx.chat.id]?.lastDayJoined;
 const getJoinedInPeriod = (chatID, periodInMilliseconds) => {
   const currentDate = Date.now();
-  return chats[chatID]?.lastDayJoined.filter(
-    ({ joinDate }) => joinDate > currentDate - periodInMilliseconds
+  return (
+    chats[chatID]?.lastDayJoined.filter(
+      ({ joinDate }) => joinDate > currentDate - periodInMilliseconds
+    ) || []
   );
 };
 const getBannedUsers = () => bannedUsers;

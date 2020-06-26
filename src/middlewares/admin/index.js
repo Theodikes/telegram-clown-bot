@@ -1,12 +1,12 @@
 import { isAdmin, getLowerCaseCommand, getSelf } from "../utils.js";
 import manageAdministration from "./admin.js";
-import editBanlist from "./ban.js";
+import editClownlist from "./clown.js";
 import editScamlist from "./scam.js";
 import sendScamlist from "./scamlist.js";
-import sendBanlist from "./banlist.js";
+import sendClownlist from "./clownlist.js";
 import {
   scamlistCommands,
-  banlistCommands,
+  clownlistCommands,
   banManagementCommands,
   scamManagementCommands,
   adminManagementCommands,
@@ -20,10 +20,10 @@ export const adminMiddleware = async (ctx, next) => {
 
   const command = getLowerCaseCommand(ctx);
 
-  if (banlistCommands.includes(command)) await sendBanlist(ctx);
+  if (clownlistCommands.includes(command)) await sendClownlist(ctx);
   else if (scamlistCommands.includes(command)) await sendScamlist(ctx);
   else if (scamManagementCommands.includes(command)) await editScamlist(ctx);
-  else if (banManagementCommands.includes(command)) await editBanlist(ctx);
+  else if (banManagementCommands.includes(command)) await editClownlist(ctx);
   else if (adminManagementCommands.includes(command))
     await manageAdministration(ctx);
 

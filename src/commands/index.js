@@ -1,5 +1,5 @@
 const helpCommands = ["help", "start"];
-const banlistCommands = ["clowns", "banned", "banlist"];
+const clownlistCommands = ["clowns", "banned", "Clownlist"];
 const scamlistCommands = ["scammers", "getScammers", "scamlist"];
 const banManagementCommands = [
   "clown",
@@ -26,7 +26,7 @@ const adminsCommands = [
   ...scamManagementCommands,
   ...banManagementCommands,
   ...scamlistCommands,
-  ...banlistCommands,
+  ...clownlistCommands,
 ];
 const developerCommands = [
   "unbanAll",
@@ -34,6 +34,8 @@ const developerCommands = [
   "underAttack",
   "kickAll",
   "addChat",
+  "ban",
+  "unban",
 ];
 
 export {
@@ -42,7 +44,7 @@ export {
   developerCommands,
   helpCommands,
   scamlistCommands,
-  banlistCommands,
+  clownlistCommands,
   banManagementCommands,
   scamManagementCommands,
   adminManagementCommands,
