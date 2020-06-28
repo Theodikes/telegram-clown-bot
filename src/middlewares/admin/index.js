@@ -4,6 +4,7 @@ import editClownlist from "./clown.js";
 import editScamlist from "./scam.js";
 import sendScamlist from "./scamlist.js";
 import sendClownlist from "./clownlist.js";
+import sendUserInfo from "./sendUserInfo.js";
 import {
   scamlistCommands,
   clownlistCommands,
@@ -20,7 +21,8 @@ export const adminMiddleware = async (ctx, next) => {
 
   const command = getLowerCaseCommand(ctx);
 
-  if (clownlistCommands.includes(command)) await sendClownlist(ctx);
+  if (command === "info") await sendUserInfo(ctx);
+  else if (clownlistCommands.includes(command)) await sendClownlist(ctx);
   else if (scamlistCommands.includes(command)) await sendScamlist(ctx);
   else if (scamManagementCommands.includes(command)) await editScamlist(ctx);
   else if (banManagementCommands.includes(command)) await editClownlist(ctx);
