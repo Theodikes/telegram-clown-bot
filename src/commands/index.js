@@ -22,6 +22,7 @@ const adminManagementCommands = [
 
 const usersCommands = ["isscam", "isScam", ...helpCommands];
 const adminsCommands = [
+  "info",
   ...adminManagementCommands,
   ...scamManagementCommands,
   ...banManagementCommands,
@@ -30,12 +31,12 @@ const adminsCommands = [
 ];
 const developerCommands = [
   "unbanAll",
-  "info",
   "underAttack",
   "kickAll",
   "addChat",
   "ban",
   "unban",
+  "restrict",
 ];
 
 export {
