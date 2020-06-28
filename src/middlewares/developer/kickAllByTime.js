@@ -2,7 +2,7 @@ import { getJoinedInPeriod, getUnixtimePeriodByParameter } from "../utils.js";
 
 export default async (ctx) => {
   const period = getUnixtimePeriodByParameter(ctx);
-  const joinedInPeriod = getJoinedInPeriod(ctx.chat.id, period);
+  const joinedInPeriod = await getJoinedInPeriod(ctx.chat.id, period);
 
   for (const user of joinedInPeriod) {
     await ctx.telegram.kickChatMember(ctx.chat.id, user.id);

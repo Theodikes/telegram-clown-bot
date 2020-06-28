@@ -4,8 +4,8 @@
   "description": "Admin bot for Telegram chats",
   "main": "",
   "scripts": {
-    "test": "nodemon src/test/index.js --experimental-modules",
-    "start": "nodemon src/app.js"
+    "test": "nodemon src/test/index.js--harmony-top-level-await",
+    "start": "nodemon src/app.js --harmony-top-level-await"
   },
   "type": "module",
   "author": "theodike",

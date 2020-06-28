@@ -46,9 +46,48 @@ const getLowerCaseCommand = (ctx) => {
   return ctx.message.text.slice(offset + 1, offset + length).toLowerCase();
 };
 
+const getParsedCommandParams = (
+  ctx,
+  availableParameters = [],
+  defaultParameters = {}
+) => {
+  const { offset, length } = ctx.message.entities.find(
+    (ent) => ent.type === "bot_command"
+  );
+
+  const paramsString = ctx.message.text.slice(offset + length);
+  const paramsArrayWithStringInKeyValueFormat = paramsString.split(/ ?-{1,2}/);
+  const setDefault = paramsArrayWithStringInKeyValueFormat.some((parameter) =>
+    /def|default/g.test(parameter)
+  );
+  const paramsArray = paramsArrayWithStringInKeyValueFormat.reduce(
+    (paramsArray, currentString) => {
+      let [parameter, value] = currentString.split(" ");
+      if (!availableParameters.includes(parameter)) {
+        return paramsArray;
+      }
+
+      if (value === "false" || value === "0") value = false;
+      else if (value === "true" || value === "1" || !value) value = true;
+
+      return [...paramsArray, [parameter, value]];
+    },
+    []
+  );
+
+  const params_dict = Object.fromEntries(paramsArray);
+  const result_parameters = Object.assign(
+    setDefault ? defaultParameters : {},
+    params_dict
+  );
+  return result_parameters;
+};
+
+const getCurrentTelegramTime = (ctx) => ctx.message.date;
 const getUnixtimePeriodByParameter = (ctx) => {
-  const parameter = ctx.message.text.split(" ")[1];
-  if (!parameter) return 0;
+  const timeParameter = getParsedCommandParams(ctx, ["time"]).time;
+  const parameter = timeParameter || ctx.message.text.split(" ")[1];
+  if (!parseInt(parameter)) return 0;
 
   let timeUnit;
   if (parameter.endsWith("m")) timeUnit = 60;
@@ -62,7 +101,8 @@ const getUnixtimePeriodByParameter = (ctx) => {
   return period;
 };
 const getLastDayJoined = (ctx) => chats[ctx.chat.id]?.lastDayJoined;
-const getJoinedInPeriod = (chatID, periodInMilliseconds) => {
+const getJoinedInPeriod = async (chatID, periodInMilliseconds) => {
+  if (!chats[chatID]) await loadAndSetChats();
   const currentDate = Date.now();
   return (
     chats[chatID]?.lastDayJoined.filter(
@@ -159,11 +199,13 @@ export {
   isCommand,
   getSelf,
   getLowerCaseCommand,
+  getParsedCommandParams,
   getUserMarkdownMention,
   getFullUserMarkdownMention,
   isReplyedMessage,
   getBannedUsers,
   getScammers,
+  getCurrentTelegramTime,
   getUnixtimePeriodByParameter,
   getLastDayJoined,
   getUser,

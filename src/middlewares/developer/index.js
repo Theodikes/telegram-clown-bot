@@ -6,6 +6,7 @@ import setAttackState from "./underAttack.js";
 import kickAllByTime from "./kickAllByTime.js";
 import banUser from "./banUser.js";
 import unbanUser from "./unbanUser.js";
+import restrictUser from "./restrictUser.js";
 
 export const developerMiddleware = async (ctx, next) => {
   if (getSelf(ctx) != OWNER) {
@@ -18,13 +19,6 @@ export const developerMiddleware = async (ctx, next) => {
   switch (command) {
     case "unbanall":
       message = await unbanAll();
-      break;
-
-    case "info":
-      const [id, username] = getUser(ctx);
-      message = `ID: ${
-        id || "неизвестно. Вы не переслали сообщение."
-      }\nUsername: @${username}`;
       break;
 
     case "addchat":
@@ -45,6 +39,10 @@ export const developerMiddleware = async (ctx, next) => {
 
     case "unban":
       message = await unbanUser(ctx);
+      break;
+
+    case "restrict":
+      message = await restrictUser(ctx);
       break;
   }
 

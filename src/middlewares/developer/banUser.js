@@ -2,6 +2,7 @@ import {
   getUserMarkdownMention,
   getUnixtimePeriodByParameter,
   getUser,
+  getCurrentTelegramTime,
 } from "../utils.js";
 
 export default async (ctx) => {
@@ -9,7 +10,7 @@ export default async (ctx) => {
 
   try {
     const periodInSeconds = getUnixtimePeriodByParameter(ctx) / 1000;
-    const currentTelegramDate = ctx.message.date;
+    const currentTelegramDate = getCurrentTelegramTime(ctx);
     const untilDate = currentTelegramDate + periodInSeconds;
 
     await ctx.kickChatMember(id, untilDate);
