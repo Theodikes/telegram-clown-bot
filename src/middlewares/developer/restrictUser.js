@@ -28,14 +28,10 @@ export default async (ctx) => {
   const periodInSeconds = getUnixtimePeriodByParameter(ctx) / 1000;
   const currentTelegramDate = getCurrentTelegramTime(ctx);
   const untilDate = currentTelegramDate + periodInSeconds;
+  const extraParameters = { ...permissions, until_date: untilDate };
 
   try {
-    await ctx.telegram.restrictChatMember(
-      ctx.chat.id,
-      id,
-      permissions,
-      untilDate
-    );
+    await ctx.telegram.restrictChatMember(ctx.chat.id, id, extraParameters);
 
     return `Изменены права пользователя ${getUserMarkdownMention(
       id,
