@@ -13,6 +13,7 @@ const availableParameters = [
   "can_invite_users",
   "can_change_info",
   "can_send_messages",
+  "can_pin_messages",
 ];
 const defaultOptions = Object.fromEntries(
   availableParameters.map((option) => [option, true])
