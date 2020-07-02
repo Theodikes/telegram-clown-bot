@@ -1,6 +1,6 @@
 import { OWNER } from "../../config.js";
 import { getSelf, getLowerCaseCommand, getUser } from "../utils.js";
-import unbanAll from "./unbanAll.js";
+import unclownAll from "./unclownAll.js";
 import addChat from "./addChat.js";
 import setAttackState from "./underAttack.js";
 import kickAllByTime from "./kickAllByTime.js";
@@ -17,8 +17,8 @@ export const developerMiddleware = async (ctx, next) => {
   let message;
 
   switch (command) {
-    case "unbanall":
-      message = await unbanAll();
+    case "unclownall":
+      message = await unclownAll();
       break;
 
     case "addchat":

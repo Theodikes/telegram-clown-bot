@@ -10,7 +10,7 @@ export default async () => {
       await loadAndSetBannedUsers();
     }
 
-    return "Банлист полностью очищен.";
+    return "Цирк больше не финансируется, весь клоунский коллектив распущен";
   } catch (error) {
     console.error(error);
     return "Ошибка с доступом к базе данных";

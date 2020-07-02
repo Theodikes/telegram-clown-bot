@@ -30,7 +30,7 @@ const adminsCommands = [
   ...clownlistCommands,
 ];
 const developerCommands = [
-  "unbanAll",
+  "unclownAll",
   "underAttack",
   "kickAll",
   "addChat",

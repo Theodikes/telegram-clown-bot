@@ -15,7 +15,7 @@ export default async (ctx) => {
   const getScamlist = "Получение скамлиста";
   const checkScam = "Проверка пользователей на скам";
   const info = "Получение информации о пользователе";
-  const unbanAll = "Полная очистка клоун-листа";
+  const unclownAll = "Полная очистка клоун-листа";
   const addChat = "Добавление чата в базу для логов";
   const kickAllByTime = "Бан в чате всех зашедших";
   const underAttack = "Перевод чата в режим атаки";
@@ -34,7 +34,7 @@ export default async (ctx) => {
     info,
   ];
   const ownerCommands = [
-    unbanAll,
+    unclownAll,
     addChat,
     kickAllByTime,
     underAttack,
@@ -77,7 +77,7 @@ export default async (ctx) => {
 
     [getScamlist]: `Отправляет полный список скамеров в формате id:username одним сообщением по команде */scamlist* или */scammers*. Команды работают только у администраторов, чтобы этим не заспамили чат.`,
 
-    [unbanAll]: `По команде */unbanAll* в чате очищает клоун-лист полностью`,
+    [unclownAll]: `По команде */unclownAll* в чате очищает клоун-лист полностью`,
 
     [addChat]: `Техническое действие для логгирования заходящих в чат, команда */addChat*`,
 
