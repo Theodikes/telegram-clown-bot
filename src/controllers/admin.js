@@ -1,6 +1,6 @@
 import Admin from "../database/models/admin.js";
 
-const resultItemConverter = (item) => item.id;
+const resultItemConverter = ({ id, username }) => ({ id, username });
 
 const getAll = () =>
   new Promise(async (resolve, reject) => {
