@@ -37,6 +37,7 @@ const developerCommands = [
   "ban",
   "unban",
   "restrict",
+  "admins",
 ];
 
 export {

@@ -112,6 +112,7 @@ const getJoinedInPeriod = async (chatID, periodInMilliseconds) => {
 };
 const getBannedUsers = () => bannedUsers;
 const getScammers = () => scammers;
+const getAdmins = () => admins;
 
 const updateLastDayJoined = async (ctx) => {
   const chatID = ctx.chat.id;
@@ -166,7 +167,7 @@ const loadAndSetBannedStickers = async () =>
   (bannedStickers = await stickersCtrl.getAll());
 loadAndSetBannedStickers();
 
-const isAdmin = (id) => admins.includes(id);
+const isAdmin = (id) => admins.some((admin) => admin.id == id);
 const isCommand = (ctx) =>
   ctx.message.text?.startsWith("/") &&
   ctx.message.entities &&
@@ -205,6 +206,7 @@ export {
   isReplyedMessage,
   getBannedUsers,
   getScammers,
+  getAdmins,
   getCurrentTelegramTime,
   getUnixtimePeriodByParameter,
   getLastDayJoined,

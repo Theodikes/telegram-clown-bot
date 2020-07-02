@@ -13,6 +13,7 @@ export default async (ctx) => {
   const banSticker = "Бан стикеров в беседе";
   const getClownlist = "Получение списка клоунов";
   const getScamlist = "Получение скамлиста";
+  const getAdminList = "Получение списка администраторов";
   const checkScam = "Проверка пользователей на скам";
   const info = "Получение информации о пользователе";
   const unclownAll = "Полная очистка клоун-листа";
@@ -41,6 +42,7 @@ export default async (ctx) => {
     ban,
     unban,
     restrict,
+    getAdminList,
   ];
 
   const availableOptions = {
@@ -76,6 +78,8 @@ export default async (ctx) => {
     [getClownlist]: `Отправляет полный банлист в формате id:username одним сообщением по команде */clowns* или */banned*. Команды работают только у администраторов, чтобы этим не заспамили чат.`,
 
     [getScamlist]: `Отправляет полный список скамеров в формате id:username одним сообщением по команде */scamlist* или */scammers*. Команды работают только у администраторов, чтобы этим не заспамили чат.`,
+
+    [getAdminList]: `Отправляет полный список админов в формате id:username одним сообщением по команде */admins*. Команда работает только у овнера.`,
 
     [unclownAll]: `По команде */unclownAll* в чате очищает клоун-лист полностью`,
 
